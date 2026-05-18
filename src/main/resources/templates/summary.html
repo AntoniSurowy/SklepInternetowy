@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MyShop</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+</head>
+<body>
+    <header>
+        <span class="title">MyShop</span>
+
+        <a href="" class="cart-ico">
+            <div>
+                <span>Koszyk</span>
+                <span>(0)</span>
+                <span>0</span>
+                <span>zł</span>
+            </div>
+        </a>
+    </header>
+
+    <div class="main-content">
+
+            <table cellspacing="0" style="border: 0px">
+                <tr>
+                    <td>1</td>
+                    <td>
+                        <img src="https://iheartcraftythings.com/wp-content/uploads/2021/05/Pencil-DRAWING-%E2%80%93-STEP-10.jpg">
+                    </td>
+                    <td></td>
+                    <td style="display: flex; padding-top: 10px">
+                        <p>1</p>
+                    </td>
+                    <td>2</td>
+
+                </tr>
+            </table>
+
+            <div class="summary">
+                <p><span>Do zapłaty</span><span>10</span>zł</p>
+            </div>
+
+        <div class="summary">
+
+            <form>
+                <label>Imię</label>
+                <input type="text" name="firstName" required>
+                <label>Nazwisko</label>
+                <input type="text" name="lastName" required>
+                <label>Address</label>
+                <input type="text" name="address" required>
+                <label>kod pocztowy</label>
+                <input type="text" name="postCode" required>
+                <label>Miasto</label>
+                <input type="text" name="city" required>
+                <button type="submit" class="add-btn">Zamów</button>
+            </form>
+
+        </div>
+
+
+    </div>
+
+</body>
+</html>
