@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import polsl.sklepinternetowy.model.Item;
+import polsl.sklepinternetowy.repository.ItemRepository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,28 +19,27 @@ public class Cart {
     private List<CartItem> cartItems = new ArrayList<>();
     private int counter = 0;
     private BigDecimal sum = BigDecimal.ZERO;
+    ItemRepository itemRepository;
+
+    private Optional<CartItem> getCartItemByItem(Item item) {
+        return cartItems.stream()
+                .filter(cartItem -> cartItem.isEquals(item))
+                .findFirst();
+    }
 
     public void addItem(Item item) {
-        boolean found = false;
-        for (CartItem cartItem : cartItems) {
-            if (cartItem.getItem().getId().equals(item.getId())) {
-                cartItem.increaseCounter();
-                found = true;
-                break;
-            }
-        }
-
-        if(!found)
-            cartItems.add(new CartItem(item));
+        getCartItemByItem(item).ifPresentOrElse(
+                CartItem::increaseCounter,
+                () -> cartItems.add(new CartItem(item)));
 
         recalculatePriceAdnCounter();
     }
 
     public void removeItem(Item item) {
-        Optional<CartItem> itemToRemove = cartItems.stream().filter(ci -> ci.getItem().getId().equals(item.getId())).findFirst();
+        Optional<CartItem> oCartItem = getCartItemByItem(item);
 
-        if (itemToRemove.isPresent()) {
-            CartItem cartItem = itemToRemove.get();
+        if (oCartItem.isPresent()) {
+            CartItem cartItem = oCartItem.get();
             cartItem.decreaseCounter();
 
             if (cartItem.hasZeroItems())
@@ -50,12 +50,12 @@ public class Cart {
     }
 
     private void recalculatePriceAdnCounter() {
-        sum = BigDecimal.ZERO;
-        counter = 0;
+        sum = cartItems.stream()
+                .map(CartItem::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        for (CartItem cartItem : cartItems) {
-            sum = sum.add(cartItem.getPrice());
-            counter += cartItem.getCounter();
-        }
+        counter = cartItems.stream()
+                .map(CartItem::getCounter)
+                .reduce(0, Integer::sum);
     }
 }

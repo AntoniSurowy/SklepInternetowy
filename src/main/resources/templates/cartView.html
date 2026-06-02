@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>MyShop</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
     <header th:replace="fragments/header :: SklepHeader"></header>
@@ -21,18 +21,18 @@
                     <th>Suma</th>
                     <th style="width: 30px;"></th>
                 </tr>
-                <tr>
+                <tr th:each="cartItem : ${@cart.cartItems}">
                     <td>1</td>
                     <td>
-                        <img alt="logo" src="https://iheartcraftythings.com/wp-content/uploads/2021/05/Pencil-DRAWING-%E2%80%93-STEP-10.jpg">
+                        <img alt="logo" th:src="@{${cartItem.item.imgUrl}}">
                     </td>
-                    <td>Ołówek</td>
+                    <td th:text="${cartItem.item.name}"></td>
                     <td style="display: flex; padding-top: 10px">
                         <a class="mbtn" href="">-</a>
-                        <p>1</p>
+                        <p th:text="${cartItem.counter}"></p>
                         <a class="mbtn" href="">+</a>
                     </td>
-                    <td>2.50</td>
+                    <td th:text="${cartItem.price}"></td>
                     <td>
                         <a class="mbtn" href="">X</a>
                     </td>
@@ -40,7 +40,7 @@
             </table>
 
             <div class="summary">
-                <p><span>Do zapłaty</span><span>10</span>zł</p>
+                <p><span>Do zapłaty</span><span th:text="${@cart.sum}"></span>zł</p>
             </div>
             <a href="" class="add-btn">Dalej</a>
         </div>

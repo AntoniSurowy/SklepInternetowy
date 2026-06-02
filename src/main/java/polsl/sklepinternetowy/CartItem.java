@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Getter
 public class CartItem {
     private Item item;
-    private int counter;
+    public int counter;
     private BigDecimal price;
 
     public CartItem(Item item) {
@@ -34,4 +34,6 @@ public class CartItem {
     private void recalculate() {
         price = item.getPrice().multiply(new BigDecimal(counter));
     }
+
+    public boolean isEquals(Item item) { return this.item.getId().equals(item.getId()); }
 }
